@@ -1,9 +1,9 @@
 ## How to run
 
 1. Upload `Ad_Optimization_Agent_Colab.ipynb` to Google Colab.
-2. Add your API key to Colab **Secrets** as `OPENAI_API_KEY` or `OPENAI_EDU_API_KEY`, and enable notebook access. The key is read at runtime.
-3. Leave `DATA_SOURCE = "mock"` for the included 21-day dataset. To use your own CSV, set `DATA_SOURCE = "upload"` and select the file when prompted, or set `DATA_SOURCE = "path"` and update `CSV_PATH`.
-4. Select **Runtime > Run all**. Review the allocation table, decision log, baseline comparison, and chart. The notebook also saves `ad_agent_decision_log.csv` and `ad_agent_evaluation.csv` in the Colab runtime.
+2. Add your API key to Colab **Secrets** as `OPENAI_API_KEY` and enable notebook access. If your secret has a different name, edit the name in the setup cell.
+3. Select **Runtime > Run all** and upload `ad_performance_mock.csv` (or your own CSV) when prompted.
+4. Review the allocation table, decision log, baseline comparison, and chart. The notebook saves `ad_agent_decision_log.csv` and `ad_agent_evaluation.csv` in the Colab runtime.
 
 The CSV needs one row per day for each channel (Search, Social, Display) and these columns: `date,channel,spend,impressions,clicks,conversions`. Set `USE_LLM = False` for an offline reference run without an API key.
 
@@ -16,7 +16,7 @@ The CSV needs one row per day for each channel (Search, Social, Display) and the
 
 ## Results snapshot
 
-The reproducible offline reference run (`USE_LLM = False`) on the 21-day mock dataset passed the budget and zero-click checks.
+The reproducible offline reference run (`USE_LLM = False`) on the 21-day mock dataset passed the budget guardrails.
 
 | Metric | Agent | Equal split |
 | --- | ---: | ---: |
