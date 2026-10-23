@@ -1,6 +1,6 @@
 ## How to run
 
-1. Open `ad_optimization_agent_colab(2).ipynb` in Google Colab.
+1. Open `ad_optimization_agent_colab.ipynb` in Google Colab.
 2. Add your API key to Colab **Secrets** as `OPENAI_API_KEY` and enable notebook access. If your secret has another name, change it in the setup cell.
 3. Select **Runtime > Run all** and upload `ad_performance_mock.csv` when prompted. You can use your own CSV with the columns `date,channel,spend,impressions,clicks,conversions`.
 4. Review the daily budget table, budget shifts with short explanations, evaluation table, and chart. The notebook saves `ad_agent_decision_log.csv` and `ad_agent_evaluation.csv` in the Colab runtime.
