@@ -1,27 +1,28 @@
 ## How to run
 
-1. Upload `Ad_Optimization_Agent_Colab.ipynb` to Google Colab.
-2. Add your API key to Colab **Secrets** as `OPENAI_API_KEY` and enable notebook access. If your secret has a different name, edit the name in the setup cell.
-3. Select **Runtime > Run all** and upload `ad_performance_mock.csv` (or your own CSV) when prompted.
-4. Review the allocation table, decision log, baseline comparison, and chart. The notebook saves `ad_agent_decision_log.csv` and `ad_agent_evaluation.csv` in the Colab runtime.
+1. Open `ad_optimization_agent_colab(2).ipynb` in Google Colab.
+2. Add your API key to Colab **Secrets** as `OPENAI_API_KEY` and enable notebook access. If your secret has another name, change it in the setup cell.
+3. Select **Runtime > Run all** and upload `ad_performance_mock.csv` when prompted. You can use your own CSV with the columns `date,channel,spend,impressions,clicks,conversions`.
+4. Review the daily budget table, budget shifts with short explanations, evaluation table, and chart. The notebook saves `ad_agent_decision_log.csv` and `ad_agent_evaluation.csv` in the Colab runtime.
 
-The CSV needs one row per day for each channel (Search, Social, Display) and these columns: `date,channel,spend,impressions,clicks,conversions`. Set `USE_LLM = False` for an offline reference run without an API key.
+To run without an API key, set `USE_LLM = False` in the setup cell. The budget decisions remain the same; the notebook uses a brief default explanation.
 
 ## Assumptions
 
-- The first three days use equal budgets. Later decisions use only the previous three completed days.
-- The daily total defaults to $300. Each channel keeps at least 10% of the total and changes by no more than 20% from its previous budget. A proposed transfer is capped at 10% of the daily total. The API can approve or hold a proposed shift, but cannot set an arbitrary budget.
-- Dates are consecutive, spend is positive, and `conversions <= clicks <= impressions`. The assignment dataset has 14–30 days.
-- Historical results assume each channel's impressions, clicks, and conversions scale linearly with spend on a given day. They are modeled estimates, not measured causal lift.
+- The CSV has one row per channel per day for Search, Social, and Display, with positive spend and `conversions <= clicks <= impressions`.
+- The first three days use an equal split. Each later decision uses only the previous three completed days.
+- The daily budget is $300. Each channel keeps at least 10% ($30), changes by no more than 20% of its previous budget per day, and transfers no more than 10% of the daily total in one decision.
+- The budget tool chooses the allocation. The API provides a short explanation for each shift; it does not change the allocation.
+- Evaluation estimates outcomes by assuming conversions, clicks, and impressions scale linearly with channel spend. The comparison is a modeled estimate, not measured lift.
 
 ## Results snapshot
 
-The reproducible offline reference run (`USE_LLM = False`) on the 21-day mock dataset passed the budget guardrails.
+On the included 21-day mock dataset, the agent makes 12 budget shifts and keeps the daily total at $300.
 
 | Metric | Agent | Equal split |
 | --- | ---: | ---: |
 | Total spend | $6,300.00 | $6,300.00 |
-| Estimated conversions | 519.78 | 412.00 |
-| Estimated CPA | $12.12 | $15.29 |
+| Modeled conversions | 519.78 | 412.00 |
+| Modeled CPA | $12.12 | $15.29 |
 
-The modeled conversion difference was **26.2%**. A live API run may hold proposed shifts and produce different results.
+The modeled conversion difference is **26.2%**. API explanations may vary between runs, but they do not affect the budget or these modeled totals.
